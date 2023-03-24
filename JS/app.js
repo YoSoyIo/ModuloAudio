@@ -13,6 +13,9 @@ var recordButton = document.getElementById("recordButton");
 var stopButton = document.getElementById("stopButton");
 var pauseButton = document.getElementById("pauseButton");
 
+//name of .wav file to use during upload and download (without extendion)
+var filename;
+
 //add events to those 2 buttons
 recordButton.addEventListener("click", startRecording);
 stopButton.addEventListener("click", stopRecording);
@@ -111,8 +114,30 @@ function stopRecording() {
 	gumStream.getAudioTracks()[0].stop();
 
 	//create the wav blob and pass it on to createDownloadLink
-	//rec.exportWAV(createDownloadLink);
-	rec.exportWAV(createDownloadButton);
+	rec.exportWAV(createDownloadLink);
+	//rec.exportWAV(createDownloadButton);
+}
+
+function getFileName(){
+	try{
+		return document.getElementById("txtNombre").value;
+	}catch{
+		return filename;
+	}
+}
+
+function setFilename(elemento){
+	filename = elemento.innerHTML;
+}
+
+function verificaCadena(cadena){
+	if (cadena.length > 0) {
+		console.log("Cumple");
+		return true;
+	} else {
+		console.log("No Cumple");
+		return false;
+	}
 }
 
 function createDownloadLink(blob) {
@@ -123,15 +148,16 @@ function createDownloadLink(blob) {
 	var link = document.createElement('a');
 	var text = document.createElement('div');
 
-	//name of .wav file to use during upload and download (without extendion)
-	var filename = new Date().toISOString();
-
 	text.innerHTML = '<input type="text" id="txtNombre" placeholder="Ingresa el nombre del archivo" class="textNombre" value="">';
 
 	//add controls to the <audio> element
 	au.controls = true;
 	au.src = url;
 
+	filename  = window.prompt("Ingresa el nombre de la nota de voz, el nombre por defecto es la fecha...");
+	if(verificaCadena(filename)==false){
+		filename = new Date().toISOString();
+	}
 	//save to disk link
 	link.href = url;
 	link.download = filename+".wav"; //download forces the browser to donwload the file using the  filename
@@ -142,7 +168,9 @@ function createDownloadLink(blob) {
 	li.appendChild(text);
 	//add the filename to the li
 	//if(document.getElementById("txtNombre").value == ''){
-		li.appendChild(document.createTextNode(filename+".wav "));
+	var etiq = document.createElement("div");
+	etiq.innerHTML="<p onblur='setFilename(this);' contenteditable>"+filename+".wav</p>";
+	li.appendChild(etiq);
 	//}else{
 		//li.appendChild(document.createTextNode(document.getElementById("txtNombre").value+"a.wav "));
 	//}
@@ -162,6 +190,7 @@ function createDownloadLink(blob) {
 		      }
 		  };
 		  var fd=new FormData();
+		  console.log(filename);
 		  fd.append("audio_data",blob, filename);
 		  xhr.open("POST","upload.php",true);
 		  xhr.send(fd);
@@ -190,9 +219,9 @@ function createDownloadButton(blob) {
 	//add controls to the <audio> element
 	au.controls = true;
 	au.src = url;
-
+	
 	link.href = url;
-	link.download = filename+".wav"; //download forces the browser to donwload the file using the  filename
+	 //download forces the browser to donwload the file using the  filename
 	link.innerHTML = '<i class="fa fa-upload"></i> Guardar';
 
 	//add the new audio element to li
@@ -209,7 +238,7 @@ function createDownloadButton(blob) {
 	li.appendChild(link);
 	
 	//upload link
-	var upload = document.createElement('button');
+	var upload = document.createElement('a');
 	upload.href="#";
 	upload.innerHTML = "Upload";
 	upload.addEventListener("click", function(event){
