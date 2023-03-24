@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Grabador de audio con Recorder.js</title>
+	<link rel="stylesheet" type="text/CSS" href="CSS/estilo.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+	<h1>Grabadora de voz</h1>
+    <div id="controls">
+  	 <button id="recordButton"><i class="fa fa-play"></i> Grabar</button>
+  	 <button id="pauseButton" disabled><i class="fa fa-pause"></i> Pause</button>
+  	 <button id="stopButton" disabled><i class="fa fa-stop"></i> Detener</button>
+    </div>
+  	<p><strong>Recordings:</strong></p>
+  	<ol id="recordingsList"></ol>
+  	<script src="JS/recorder.js"></script>
+  	<script src="JS/app.js"></script>
+</body>
+</html>
