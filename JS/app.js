@@ -178,7 +178,9 @@ function createDownloadButton(blob) {
 	var url = URL.createObjectURL(blob);
 	var au = document.createElement('audio');
 	var text = document.createElement('div');
-
+	var link = document.createElement('a');
+	var li = document.createElement('li');
+	
 	//name of .wav file to use during upload and download (without extendion)
 	var filename = new Date().toISOString();
 
