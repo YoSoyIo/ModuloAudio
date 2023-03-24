@@ -140,6 +140,18 @@ function verificaCadena(cadena){
 	}
 }
 
+function cambiarNombre(){
+	var link = document.getElementById("btn-descarga");
+	var texto = document.getElementById("txtNombre");
+	var etiqueta = document.getElementById("lbl-nombre");
+	var nombre = texto.value;
+
+	if(verificaCadena(nombre)){
+		link.download = nombre+".wav";
+		etiqueta.innerHTML = nombre+".wav";
+	}
+}
+
 function createDownloadLink(blob) {
 	
 	var url = URL.createObjectURL(blob);
@@ -148,18 +160,17 @@ function createDownloadLink(blob) {
 	var link = document.createElement('a');
 	var text = document.createElement('div');
 
-	text.innerHTML = '<input type="text" id="txtNombre" placeholder="Ingresa el nombre del archivo" class="textNombre" value="">';
+	text.innerHTML = '<input type="text" id="txtNombre" placeholder="Ingresa el nombre del archivo" class="textNombre" value="">'+
+					 '<button id="btn-nombre" class="boton-multimedia" onclick=cambiarNombre()><i class="fa fa-upload"></i> Renombrar"</button>';
 
 	//add controls to the <audio> element
 	au.controls = true;
 	au.src = url;
 
-	filename  = window.prompt("Ingresa el nombre de la nota de voz, el nombre por defecto es la fecha...");
-	if(verificaCadena(filename)==false){
-		filename = new Date().toISOString();
-	}
+	filename  = new Date().toISOString();
 	//save to disk link
 	link.href = url;
+	link.id = "btn-descarga";
 	link.download = filename+".wav"; //download forces the browser to donwload the file using the  filename
 	link.innerHTML = '<i class="fa fa-upload"></i> Guardar';
 
@@ -169,7 +180,7 @@ function createDownloadLink(blob) {
 	//add the filename to the li
 	//if(document.getElementById("txtNombre").value == ''){
 	var etiq = document.createElement("div");
-	etiq.innerHTML="<p onblur='setFilename(this);' contenteditable>"+filename+".wav</p>";
+	etiq.innerHTML="<p id='lbl-nombre'>"+filename+".wav</p>";
 	li.appendChild(etiq);
 	//}else{
 		//li.appendChild(document.createTextNode(document.getElementById("txtNombre").value+"a.wav "));
