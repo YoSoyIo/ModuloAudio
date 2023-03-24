@@ -111,8 +111,8 @@ function stopRecording() {
 	gumStream.getAudioTracks()[0].stop();
 
 	//create the wav blob and pass it on to createDownloadLink
-	rec.exportWAV(createDownloadLink);
-	//rec.exportWAV(createDownloadButton);
+	//rec.exportWAV(createDownloadLink);
+	rec.exportWAV(createDownloadButton);
 }
 
 function createDownloadLink(blob) {
@@ -182,8 +182,8 @@ function createDownloadButton(blob) {
 	//name of .wav file to use during upload and download (without extendion)
 	var filename = new Date().toISOString();
 
-	text.innerHTML = '<input type="text" id="txtNombre" placeholder="Ingresa el nombre del archivo" class="textNombre" value="">'+
-					 '<input type="button" id="btnDescargar" value="<i class="fa fa-upload"></i> Guardar" onclick=uploadFile()>';
+	text.innerHTML = '<input type="text" id="txtNombre" placeholder="Ingresa el nombre del archivo" class="textNombre" value="">';//+
+	//				 '<input type="button" id="btnDescargar" value="<i class="fa fa-upload"></i> Guardar" onclick=uploadFile()>';
 
 	//add controls to the <audio> element
 	au.controls = true;
@@ -207,7 +207,7 @@ function createDownloadButton(blob) {
 	li.appendChild(link);
 	
 	//upload link
-	var upload = document.createElement('a');
+	var upload = document.createElement('button');
 	upload.href="#";
 	upload.innerHTML = "Upload";
 	upload.addEventListener("click", function(event){
