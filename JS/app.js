@@ -22,7 +22,6 @@ stopButton.addEventListener("click", stopRecording);
 pauseButton.addEventListener("click", pauseRecording);
 
 function startRecording() {
-	console.log("recordButton clicked");
 
 	/*
 		Simple constraints object, for more advanced audio features see
@@ -43,9 +42,7 @@ function startRecording() {
     	We're using the standard promise based getUserMedia() 
     	https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
 	*/
-	console.log("Antes del permiso");
 	navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
-		console.log("getUserMedia() success, stream created, initializing Recorder.js ...");
 
 		/*
 			create an audio context after getUserMedia is called
@@ -70,12 +67,9 @@ function startRecording() {
 		//start the recording process
 		rec.record();
 
-		console.log("Recording started");
 
 	}).catch(function(err) {
 	  	//enable the record button if getUserMedia() fails
-		console.log(err);
-		console.log("No pidio permiso");
     	recordButton.disabled = false;
     	stopButton.disabled = true;
     	pauseButton.disabled = true;
@@ -83,7 +77,6 @@ function startRecording() {
 }
 
 function pauseRecording(){
-	console.log("pauseButton clicked rec.recording=",rec.recording );
 	if (rec.recording){
 		//pause
 		rec.stop();
@@ -97,9 +90,6 @@ function pauseRecording(){
 }
 
 function stopRecording() {
-	console.log("stopButton clicked");
-
-	//disable the stop button, enable the record too allow for new recordings
 	stopButton.disabled = true;
 	recordButton.disabled = false;
 	pauseButton.disabled = true;
@@ -149,11 +139,20 @@ function cambiarNombre(){
 	if(verificaCadena(nombre)){
 		link.download = nombre+".wav";
 		etiqueta.innerHTML = nombre+".wav";
+		texto.placeholder = nombre+".wav";
 	}
 }
 
 function createDownloadLink(blob) {
 	
+	try{
+		let lista = document.getElementById("recordingsList");
+		let borrar = document.getElementById("elemA");
+		lista.removeChild(borrar);
+	}catch{
+
+	}
+
 	var url = URL.createObjectURL(blob);
 	var au = document.createElement('audio');
 	var li = document.createElement('li');
@@ -163,20 +162,22 @@ function createDownloadLink(blob) {
 
 	li.id = "elemA";
 
-	text.innerHTML = '<input type="text" id="txtNombre" placeholder="Ingresa el nombre del archivo" class="textNombre" value="">'+
-					 '<button id="btn-nombre" class="boton-multimedia" onclick=cambiarNombre()><i class="fa fa-upload"></i> Renombrar"</button>';
+	filename  = new Date().toISOString();
+
+	text.innerHTML = '<input type="text" id="txtNombre" onblur="cambiarNombre();" placeholder="'+filename+'.wav" class="textNombre" value="">'+
+					 '<button id="btn-nombre" class="boton-multimedia" onclick="cambiarNombre();"><i class="fa fa-pencil-square-o"></i> Renombrar</button>';
 
 	//add controls to the <audio> element
 	au.controls = true;
 	au.controlsList = "nodownload";
 	au.src = url;
 
-	filename  = new Date().toISOString();
 	//save to disk link
 	link.href = url;
 	link.id = "btn-descarga";
+	link.className = "boton-audio";
 	link.download = filename+".wav"; //download forces the browser to donwload the file using the  filename
-	link.innerHTML = '<i class="fa fa-upload"></i> Guardar';
+	link.innerHTML = '<i class="fa fa-download"></i> Descargar';
 
 	btnDelete.addEventListener("click", function(event){
 		let lista = document.getElementById("recordingsList");
@@ -184,7 +185,7 @@ function createDownloadLink(blob) {
 		lista.removeChild(borrar);
 	});
 
-	btnDelete.innerHTML = '<i class="fa fa-window-close"></i>';
+	btnDelete.innerHTML = '<i class="fa fa-window-close"></i> Quitar';
 	btnDelete.className = "boton-borrar";
 	//add the new audio element to li
 	li.appendChild(au);
@@ -204,7 +205,8 @@ function createDownloadLink(blob) {
 	//upload link
 	var upload = document.createElement('a');
 	upload.href="#";
-	upload.innerHTML = "Upload";
+	upload.className = "boton-audio";
+	upload.innerHTML = '<i class="fa fa-upload"></i> Guardar';
 	upload.addEventListener("click", function(event){
 		  var xhr=new XMLHttpRequest();
 		  xhr.onload=function(e) {
@@ -221,7 +223,7 @@ function createDownloadLink(blob) {
 	li.appendChild(document.createTextNode (" "))//add a space in between
 	li.appendChild(upload);//add the upload link to li
 	li.appendChild(btnDelete);
-	
+
 	//add the li element to the ol
 	recordingsList.appendChild(li);
 }
