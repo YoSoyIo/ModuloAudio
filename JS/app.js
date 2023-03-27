@@ -140,6 +140,7 @@ function cambiarNombre(){
 		link.download = nombre+".wav";
 		etiqueta.innerHTML = nombre+".wav";
 		texto.placeholder = nombre+".wav";
+		texto.value = "";
 	}
 }
 
