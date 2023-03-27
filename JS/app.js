@@ -159,12 +159,16 @@ function createDownloadLink(blob) {
 	var li = document.createElement('li');
 	var link = document.createElement('a');
 	var text = document.createElement('div');
+	var btnDelete = document.createElement('button');
+
+	li.id = "elemA";
 
 	text.innerHTML = '<input type="text" id="txtNombre" placeholder="Ingresa el nombre del archivo" class="textNombre" value="">'+
 					 '<button id="btn-nombre" class="boton-multimedia" onclick=cambiarNombre()><i class="fa fa-upload"></i> Renombrar"</button>';
 
 	//add controls to the <audio> element
 	au.controls = true;
+	au.controlsList = "nodownload";
 	au.src = url;
 
 	filename  = new Date().toISOString();
@@ -174,6 +178,14 @@ function createDownloadLink(blob) {
 	link.download = filename+".wav"; //download forces the browser to donwload the file using the  filename
 	link.innerHTML = '<i class="fa fa-upload"></i> Guardar';
 
+	btnDelete.addEventListener("click", function(event){
+		let lista = document.getElementById("recordingsList");
+		let borrar = document.getElementById("elemA");
+		lista.removeChild(borrar);
+	});
+
+	btnDelete.innerHTML = '<i class="fa fa-window-close"></i>';
+	btnDelete.className = "boton-borrar";
 	//add the new audio element to li
 	li.appendChild(au);
 	li.appendChild(text);
@@ -208,65 +220,8 @@ function createDownloadLink(blob) {
 	})
 	li.appendChild(document.createTextNode (" "))//add a space in between
 	li.appendChild(upload);//add the upload link to li
-
-	//add the li element to the ol
-	recordingsList.appendChild(li);
-}
-
-function createDownloadButton(blob) {
+	li.appendChild(btnDelete);
 	
-	var url = URL.createObjectURL(blob);
-	var au = document.createElement('audio');
-	var text = document.createElement('div');
-	var link = document.createElement('a');
-	var li = document.createElement('li');
-	
-	//name of .wav file to use during upload and download (without extendion)
-	var filename = new Date().toISOString();
-
-	text.innerHTML = '<input type="text" id="txtNombre" placeholder="Ingresa el nombre del archivo" class="textNombre" value="">';//+
-	//				 '<input type="button" id="btnDescargar" value="<i class="fa fa-upload"></i> Guardar" onclick=uploadFile()>';
-
-	//add controls to the <audio> element
-	au.controls = true;
-	au.src = url;
-	
-	link.href = url;
-	 //download forces the browser to donwload the file using the  filename
-	link.innerHTML = '<i class="fa fa-upload"></i> Guardar';
-
-	//add the new audio element to li
-	li.appendChild(au);
-	li.appendChild(text);
-	//add the filename to the li
-	//if(document.getElementById("txtNombre").value == ''){
-		li.appendChild(document.createTextNode(filename+".wav "));
-	//}else{
-		//li.appendChild(document.createTextNode(document.getElementById("txtNombre").value+"a.wav "));
-	//}
-
-	//add the save to disk link to li
-	li.appendChild(link);
-	
-	//upload link
-	var upload = document.createElement('a');
-	upload.href="#";
-	upload.innerHTML = "Upload";
-	upload.addEventListener("click", function(event){
-		  var xhr=new XMLHttpRequest();
-		  xhr.onload=function(e) {
-		      if(this.readyState === 4) {
-		          console.log("Server returned: ",e.target.responseText);
-		      }
-		  };
-		  var fd=new FormData();
-		  fd.append("audio_data",blob, filename);
-		  xhr.open("POST","upload.php",true);
-		  xhr.send(fd);
-	})
-	li.appendChild(document.createTextNode (" "))//add a space in between
-	li.appendChild(upload);//add the upload link to li
-
 	//add the li element to the ol
 	recordingsList.appendChild(li);
 }

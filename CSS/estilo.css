@@ -1,5 +1,6 @@
 :root{
     --color-azul: #60979B;
+    --color-eliminar: red;
 }
 
 body{
@@ -28,4 +29,14 @@ body{
 
 .boton-multimedia i{
     color: var(--color-azul);
+}
+
+.boton-borrar{
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.boton-borrar i{
+    color: var(--color-eliminar);
 }
