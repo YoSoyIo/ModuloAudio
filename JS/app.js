@@ -23,33 +23,12 @@ pauseButton.addEventListener("click", pauseRecording);
 
 function startRecording() {
 
-	/*
-		Simple constraints object, for more advanced audio features see
-		https://addpipe.com/blog/audio-constraints-getusermedia/
-	*/
-    
     var constraints = { audio: true, video:false };
 
- 	/*
-    	Disable the record button until we get a success or fail from getUserMedia() 
-	*/
+	recordButton.className = "ocultar";
+	pauseButton.className = "mostrar";
 
-	recordButton.disabled = true;
-	stopButton.disabled = false;
-	pauseButton.disabled = false;
-
-	/*
-    	We're using the standard promise based getUserMedia() 
-    	https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
-	*/
 	navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
-
-		/*
-			create an audio context after getUserMedia is called
-			sampleRate might change after getUserMedia is called, like it does on macOS when recording through AirPods
-			the sampleRate defaults to the one set in your OS for your playback device
-
-		*/
 		audioContext = new AudioContext();
 
 		/*  assign to gumStream for later use  */
@@ -58,10 +37,6 @@ function startRecording() {
 		/* use the stream */
 		input = audioContext.createMediaStreamSource(stream);
 
-		/* 
-			Create the Recorder object and configure to record mono sound (1 channel)
-			Recording 2 channels  will double the file size
-		*/
 		rec = new Recorder(input,{numChannels:1});
 
 		//start the recording process
@@ -69,10 +44,8 @@ function startRecording() {
 
 
 	}).catch(function(err) {
-	  	//enable the record button if getUserMedia() fails
-    	recordButton.disabled = false;
-    	stopButton.disabled = true;
-    	pauseButton.disabled = true;
+		recordButton.className = "mostrar";
+		pauseButton.className = "ocultar";
 	});
 }
 
@@ -80,24 +53,19 @@ function pauseRecording(){
 	if (rec.recording){
 		//pause
 		rec.stop();
-		pauseButton.innerHTML='<i class="fa fa-play"></i> Reanudar';
+		document.getElementById("icon-pausar").style.color = "black";
 	}else{
 		//resume
 		rec.record()
-		pauseButton.innerHTML='<i class="fa fa-pause"></i> Pause';
+		document.getElementById("icon-pausar").style.color = "red";
 
 	}
 }
 
 function stopRecording() {
-	stopButton.disabled = true;
-	recordButton.disabled = false;
-	pauseButton.disabled = true;
+	recordButton.className = "mostrar";
+	pauseButton.className = "ocultar";
 
-	//reset button just in case the recording is stopped while paused
-	pauseButton.innerHTML='<i class="fa fa-pause"></i> Pause';
-	
-	//tell the recorder to stop the recording
 	rec.stop();
 
 	//stop microphone access
@@ -133,12 +101,12 @@ function verificaCadena(cadena){
 function cambiarNombre(){
 	var link = document.getElementById("btn-descarga");
 	var texto = document.getElementById("txtNombre");
-	var etiqueta = document.getElementById("lbl-nombre");
+	//var etiqueta = document.getElementById("lbl-nombre");
 	var nombre = texto.value;
 
 	if(verificaCadena(nombre)){
 		link.download = nombre+".wav";
-		etiqueta.innerHTML = nombre+".wav";
+		//etiqueta.innerHTML = nombre+".wav";
 		texto.placeholder = nombre+".wav";
 		texto.value = "";
 	}
@@ -165,13 +133,13 @@ function createDownloadLink(blob) {
 
 	filename  = new Date().toISOString();
 
-	text.innerHTML = '<input type="text" id="txtNombre" onblur="cambiarNombre();" placeholder="'+filename+'.wav" class="textNombre" value="">'+
-					 '<button id="btn-nombre" class="boton-multimedia" onclick="cambiarNombre();"><i class="fa fa-pencil-square-o"></i> Renombrar</button>';
+	text.innerHTML = '<input type="text" id="txtNombre" onblur="cambiarNombre();" placeholder="'+filename+'.wav" class="textNombre" value="">';
 
 	//add controls to the <audio> element
 	au.controls = true;
 	au.controlsList = "nodownload";
 	au.src = url;
+	au.innerHTML = "<b style='color: red;'>Este navegador no soporta la grabadora de audio</b>";
 
 	//save to disk link
 	link.href = url;
@@ -188,20 +156,10 @@ function createDownloadLink(blob) {
 
 	btnDelete.innerHTML = '<i class="fa fa-window-close"></i> Quitar';
 	btnDelete.className = "boton-borrar";
-	//add the new audio element to li
+
 	li.appendChild(au);
 	li.appendChild(text);
-	//add the filename to the li
-	//if(document.getElementById("txtNombre").value == ''){
-	var etiq = document.createElement("div");
-	etiq.innerHTML="<p id='lbl-nombre'>"+filename+".wav</p>";
-	li.appendChild(etiq);
-	//}else{
-		//li.appendChild(document.createTextNode(document.getElementById("txtNombre").value+"a.wav "));
-	//}
-
-	//add the save to disk link to li
-	li.appendChild(link);
+	//li.appendChild(link);
 	
 	//upload link
 	var upload = document.createElement('a');
@@ -209,6 +167,7 @@ function createDownloadLink(blob) {
 	upload.className = "boton-audio";
 	upload.innerHTML = '<i class="fa fa-upload"></i> Guardar';
 	upload.addEventListener("click", function(event){
+		  filename = document.getElementById("txtNombre").value+".wav";
 		  var xhr=new XMLHttpRequest();
 		  xhr.onload=function(e) {
 		      if(this.readyState === 4) {

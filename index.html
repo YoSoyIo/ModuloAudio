@@ -7,14 +7,15 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-	<h1>Grabadora de voz</h1>
-    <div id="controls">
-  	 <button id="recordButton" class="boton-multimedia"><i class="fa fa-play"></i> Grabar</button>
-  	 <button id="pauseButton" class="boton-multimedia" disabled><i class="fa fa-pause"></i> Pause</button>
-  	 <button id="stopButton" class="boton-multimedia" disabled><i class="fa fa-stop"></i> Detener</button>
-    </div>
-  	<p><strong>Recordings:</strong></p>
-  	<ol id="recordingsList"></ol>
+	<div id="contenedorAudio">
+		<div id="controls" class="controles">
+			<p>Grabar audio</p>
+			  <button id="recordButton" class="mostrar"><i id="icon-grabar" class="fa fa-circle"></i></button>
+			  <button id="pauseButton" class="ocultar"><i id="icon-pausar" class="fa fa-circle"></i></button>
+			  <button id="stopButton" class="mostrar"><i id="icon-detener" class="fa fa-stop-circle-o"></i></button>
+		   </div>
+			 <ol id="recordingsList"></ol>
+	</div>
   	<script src="JS/recorder.js"></script>
   	<script src="JS/app.js"></script>
 </body>

@@ -1,10 +1,20 @@
 :root{
     --color-azul: #60979B;
     --color-eliminar: red;
+    --color-botones: #000;
 }
 
 body{
     font-family: monospace;
+}
+
+#contenedorAudio{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    width: 100%;
 }
 
 #grabar{
@@ -19,22 +29,43 @@ body{
     display: block;
 }
 
-#controls i{
-    color: var(--color-azul);
-}
-
-.boton-multimedia {
-    font-weight: bold;
-}
-
-.boton-multimedia i{
-    color: var(--color-azul);
-    font-weight: bold;
-}
-
 audio{
     width: 300px;
     height: 30px;
+}
+
+.controles{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+}
+
+.controles button{
+    background: none;
+    border: none;
+}
+
+.controles p{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#icon-grabar, #icon-pausar{
+    border: 5px solid #000;
+    border-radius: 50%;
+    font-size: 18px;
+    padding: 4px;
+    cursor: pointer;
+}
+
+#icon-pausar{
+    color: red;
+}
+
+#icon-detener{
+    font-size: 40px;
+    cursor: pointer;
 }
 
 .boton-borrar{
