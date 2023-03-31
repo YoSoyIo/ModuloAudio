@@ -1,20 +1,20 @@
 //webkitURL is deprecated but nevertheless
 URL = window.URL || window.webkitURL;
 
-var gumStream; 						//stream from getUserMedia()
-var rec; 							//Recorder.js object
-var input; 							//MediaStreamAudioSourceNode we'll be recording
+let gumStream; 						//stream from getUserMedia()
+let rec; 							//Recorder.js object
+let input; 							//MediaStreamAudioSourceNode we'll be recording
 
 // shim for AudioContext when it's not avb. 
-var AudioContext = window.AudioContext || window.webkitAudioContext;
-var audioContext //audio context to help us record
+let AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioContext //audio context to help us record
 
-var recordButton = document.getElementById("recordButton");
-var stopButton = document.getElementById("stopButton");
-var pauseButton = document.getElementById("pauseButton");
+let recordButton = document.getElementById("recordButton");
+let stopButton = document.getElementById("stopButton");
+let pauseButton = document.getElementById("pauseButton");
 
 //name of .wav file to use during upload and download (without extendion)
-var filename;
+let filename;
 
 //add events to those 2 buttons
 recordButton.addEventListener("click", startRecording);
@@ -23,7 +23,7 @@ pauseButton.addEventListener("click", pauseRecording);
 
 function startRecording() {
 
-    var constraints = { audio: true, video:false };
+    let constraints = { audio: true, video:false };
 
 	recordButton.className = "ocultar";
 	pauseButton.className = "mostrar";
@@ -99,10 +99,10 @@ function verificaCadena(cadena){
 }
 
 function cambiarNombre(){
-	var link = document.getElementById("btn-descarga");
-	var texto = document.getElementById("txtNombre");
-	//var etiqueta = document.getElementById("lbl-nombre");
-	var nombre = texto.value;
+	let link = document.getElementById("btn-descarga");
+	let texto = document.getElementById("txtNombre");
+	//let etiqueta = document.getElementById("lbl-nombre");
+	let nombre = texto.value;
 
 	if(verificaCadena(nombre)){
 		link.download = nombre+".wav";
@@ -122,12 +122,16 @@ function createDownloadLink(blob) {
 
 	}
 
-	var url = URL.createObjectURL(blob);
-	var au = document.createElement('audio');
-	var li = document.createElement('li');
-	var link = document.createElement('a');
-	var text = document.createElement('div');
-	var btnDelete = document.createElement('button');
+	let url = URL.createObjectURL(blob);
+	let au = document.createElement('audio');
+	let li = document.createElement('li');
+	let link = document.createElement('a');
+	let text = document.createElement('div');
+	let btnDelete = document.createElement('button');
+	let btnPlay = document.createElement('button');
+	let btnPause = document.createElement('button');
+	let rgDuration = document.createElement("input");
+	let time = document.createElement("p");
 
 	li.id = "elemA";
 
@@ -139,6 +143,8 @@ function createDownloadLink(blob) {
 	au.controls = true;
 	au.controlsList = "nodownload";
 	au.src = url;
+	au.id = "audio1";
+	au.className = "ocultar";
 	au.innerHTML = "<b style='color: red;'>Este navegador no soporta la grabadora de audio</b>";
 
 	//save to disk link
@@ -157,24 +163,77 @@ function createDownloadLink(blob) {
 	btnDelete.innerHTML = '<i class="fa fa-window-close"></i> Quitar';
 	btnDelete.className = "boton-borrar";
 
+	btnPlay.addEventListener("click", function(event){
+		let audio = document.getElementById("audio1");
+		let audioBar = document.getElementById("audioBar");
+		let time = document.getElementById("time1");
+
+		audioBar.max = "100";
+		audioBar.min = "0";
+
+		audio.addEventListener('timeupdate', function() {
+			audioBar.value = (audio.currentTime / audio.duration) * 100;
+			time.innerHTML = Math.trunc(audio.currentTime)+" s./"+Math.trunc(audio.duration)+" s.";
+			if(audio.currentTime / audio.duration == 1){
+				btnPlay.className = "boton-play mostrar";
+				btnPause.className = "boton-pause ocultar";
+			}
+		});
+
+		audioBar.addEventListener('input', function() {
+			audio.currentTime = (audioBar.value / 100) * audio.duration;
+			time.innerHTML = Math.trunc(audio.currentTime)+" s./"+Math.trunc(audio.duration)+" s.";
+		});
+
+		btnPlay.className = "boton-play ocultar";
+		btnPause.className = "boton-pause mostrar";
+		audio.play();
+	});
+
+	btnPlay.innerHTML = '<i class="fa fa-play-circle-o"></i>';
+	btnPlay.className = "boton-play mostrar";
+
+	btnPause.addEventListener("click", function(event){
+		let audio = document.getElementById("audio1");
+
+		btnPlay.className = "boton-play mostrar";
+		btnPause.className = "boton-pause ocultar";
+
+		audio.pause();
+	});
+
+	btnPause.innerHTML = '<i class="fa fa-pause-circle-o"></i>';
+	btnPause.className = "boton-pause ocultar";
+
+	time.id = "time1";
+	time.innerHTML = "00:00/00:00";
+
+	rgDuration.type = "range";
+	rgDuration.value = "0";
+	rgDuration.id = "audioBar";
+
 	li.appendChild(au);
+	li.appendChild(btnPlay);
+	li.appendChild(btnPause);
+	li.appendChild(time);
+	li.appendChild(rgDuration);
 	li.appendChild(text);
 	//li.appendChild(link);
 	
 	//upload link
-	var upload = document.createElement('a');
+	let upload = document.createElement('a');
 	upload.href="#";
 	upload.className = "boton-audio";
 	upload.innerHTML = '<i class="fa fa-upload"></i> Guardar';
 	upload.addEventListener("click", function(event){
 		  filename = document.getElementById("txtNombre").value+".wav";
-		  var xhr=new XMLHttpRequest();
+		  let xhr=new XMLHttpRequest();
 		  xhr.onload=function(e) {
 		      if(this.readyState === 4) {
 		          console.log("Server returned: ",e.target.responseText);
 		      }
 		  };
-		  var fd=new FormData();
+		  let fd=new FormData();
 		  console.log(filename);
 		  fd.append("audio_data",blob, filename);
 		  xhr.open("POST","upload.php",true);
