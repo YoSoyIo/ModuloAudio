@@ -53,6 +53,18 @@ audio{
     border: none;
 }
 
+.circle {
+    fill: white;
+    stroke: black;
+    stroke-width: 10;
+}
+
+.circle2 {
+    fill: black;
+    stroke: black;
+    stroke-width: 2;
+}
+
 .boton-play i, .boton-pause i{
     font-size: 40px;
     cursor: pointer;
@@ -63,11 +75,15 @@ audio{
     font-weight: bold;
 }
 
+#previaList{
+    display: contents;
+}
+
 #icon-grabar, #icon-pausar{
     border: 5px solid #000;
     border-radius: 50%;
-    font-size: 18px;
-    padding: 4px;
+    font-size: 17px;
+    padding: 5px;
     cursor: pointer;
 }
 
@@ -157,6 +173,7 @@ ol#recordingsList {
     flex-wrap: nowrap;
     justify-content: space-around;
     align-items: center;
+    list-style: none;
 }
 
 li#elemA {
@@ -178,4 +195,9 @@ li#elemA {
 
 .boton-audio:hover{
     background-color: var(--color-verde);
+}
+
+.fechaNota{
+    display: inline-block;
+    color: #000;
 }

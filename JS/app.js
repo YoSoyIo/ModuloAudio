@@ -71,6 +71,10 @@ function stopRecording() {
 	gumStream.getAudioTracks()[0].stop();
 
 	// En esta parte se llama la función de creación de lo más importante
+	let lista = document.getElementById("recordingsList");
+	let borrar2 = document.getElementById("previaList");
+	lista.removeChild(borrar2);
+
 	rec.exportWAV(createDownloadLink);
 }
 
@@ -112,6 +116,11 @@ function verificaCadena(cadena) {
 	}
 }
 
+function updateVolume(volume) {
+    const audio = document.querySelector('audio');
+    audio.volume = volume;
+  }
+
 function cambiarNombre() {
 	let link = document.getElementById("btn-descarga");
 	let texto = document.getElementById("txtNombre");
@@ -125,6 +134,13 @@ function cambiarNombre() {
 		texto.value = "";
 	}
 }
+
+function formatTime(seconds) {
+	var minutes = Math.floor(seconds / 60);
+	var seconds = Math.floor(seconds % 60);
+	var formattedTime = minutes.toString().padStart(1, "0") + ":" + seconds.toString().padStart(2, "0");
+	return formattedTime;
+  }
 
 function createDownloadLink(blob) {
 	try {
@@ -143,7 +159,8 @@ function createDownloadLink(blob) {
 	let btnPause = document.createElement("button");
 	let rgDuration = document.createElement("input");
 	let time = document.createElement("p");
-
+	let volumen = document.createElement("input");
+	
 	li.id = "elemA";
 
 	filename = new Date().toISOString();
@@ -181,23 +198,23 @@ function createDownloadLink(blob) {
 		audioBar.max = "100";
 		audioBar.min = "0";
 
-		audio.addEventListener("timeupdate", function () {
+		audio.addEventListener('timeupdate', function() {
 			audioBar.value = (audio.currentTime / audio.duration) * 100;
-			time.innerHTML =
-				audio.currentTime.toFixed(2) + "/" + audio.duration.toFixed(2);
-			time.innerHTML = time.innerHTML.replace(/\./g, ":");
-			if (audio.currentTime / audio.duration == 1) {
-				btnPlay.className = "boton-play mostrar";
-				btnPause.className = "boton-pause ocultar";
+			var currentTimeFormatted = formatTime(audio.currentTime);
+			var durationFormatted = formatTime(audio.duration);
+			time.innerHTML = currentTimeFormatted + "/" + durationFormatted;
+			if(audio.currentTime / audio.duration == 1){
+			  btnPlay.className = "boton-play mostrar";
+			  btnPause.className = "boton-pause ocultar";
 			}
-		});
-
-		audioBar.addEventListener("input", function () {
+		  });
+		  
+		  audioBar.addEventListener('input', function() {
 			audio.currentTime = (audioBar.value / 100) * audio.duration;
-			time.innerHTML =
-				audio.currentTime.toFixed(2) + "/" + audio.duration.toFixed(2);
-			time.innerHTML = time.innerHTML.replace(/\./g, ":");
-		});
+			var currentTimeFormatted = formatTime(audio.currentTime);
+			var durationFormatted = formatTime(audio.duration);
+			time.innerHTML = currentTimeFormatted + "/" + durationFormatted;
+		  });
 
 		btnPlay.className = "boton-play ocultar";
 		btnPause.className = "boton-pause mostrar";
@@ -226,11 +243,18 @@ function createDownloadLink(blob) {
 	rgDuration.value = "0";
 	rgDuration.id = "audioBar";
 
+	volumen.type = "range";
+	volumen.min = "0";
+	volumen.max = "1";
+	volumen.step = "0.01";
+	volumen.oninput = "updateVolume(this.value)";
+
 	li.appendChild(au);
 	li.appendChild(btnPlay);
 	li.appendChild(btnPause);
 	li.appendChild(rgDuration);
 	li.appendChild(time);
+	li.appendChild(volumen);
 	li.appendChild(text);
 
 	//upload link
@@ -243,6 +267,11 @@ function createDownloadLink(blob) {
 		let enlanceLista = document.createElement("li");
 		let lista = document.getElementById("recordingsList");
 		let borrar2 = document.getElementById("elemA");
+
+		let contenedor1 = document.getElementById("contenedorAudio");
+		let contenedor2 = document.getElementById("controls");
+
+		contenedor1.removeChild(contenedor2);
 
 		if (verificaCadena(document.getElementById("txtNombre").value)) {
 			filename = quitaAcentos(document.getElementById("txtNombre").value);
@@ -257,12 +286,10 @@ function createDownloadLink(blob) {
 		}
 
 		link.download = filename;
-		link.innerHTML =
-			'<i class="fa fa-download"></i> ' +
-			filename +
-			" (" +
+		link.innerHTML = filename +
+			"<p class='fechaNota'> - (" +
 			ahora.toLocaleString() +
-			")";
+			")  </p>" + '<i class="fa fa-download"></i>';
 		enlanceLista.appendChild(link);
 		lista.removeChild(borrar2);
 		lista.appendChild(enlanceLista);
