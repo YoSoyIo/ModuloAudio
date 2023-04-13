@@ -71,9 +71,11 @@ function stopRecording() {
 	gumStream.getAudioTracks()[0].stop();
 
 	// En esta parte se llama la función de creación de lo más importante
-	let lista = document.getElementById("recordingsList");
-	let borrar2 = document.getElementById("previaList");
-	lista.removeChild(borrar2);
+	try{
+		let lista = document.getElementById("recordingsList");
+		let borrar2 = document.getElementById("previaList");
+		lista.removeChild(borrar2);
+	}catch{}
 
 	rec.exportWAV(createDownloadLink);
 }
@@ -116,9 +118,12 @@ function verificaCadena(cadena) {
 	}
 }
 
-function updateVolume(volume) {
+function updateVolume() {
+	const volume = document.getElementById("sliderV");
     const audio = document.querySelector('audio');
-    audio.volume = volume;
+
+	audio.volume = volume.value;
+
   }
 
 function cambiarNombre() {
@@ -151,7 +156,7 @@ function createDownloadLink(blob) {
 
 	let url = URL.createObjectURL(blob);
 	let au = document.createElement("audio");
-	let li = document.createElement("li");
+	let li = document.createElement("div");
 	let link = document.createElement("a");
 	let text = document.createElement("div");
 	let btnDelete = document.createElement("button");
@@ -159,7 +164,9 @@ function createDownloadLink(blob) {
 	let btnPause = document.createElement("button");
 	let rgDuration = document.createElement("input");
 	let time = document.createElement("p");
+	let contCajaV = document.createElement("div");
 	let volumen = document.createElement("input");
+	let iconV = document.createElement("i");
 	
 	li.id = "elemA";
 
@@ -243,18 +250,28 @@ function createDownloadLink(blob) {
 	rgDuration.value = "0";
 	rgDuration.id = "audioBar";
 
+	contCajaV.className = "cajaVol";
+	contCajaV.id = "cajaVol";
+
 	volumen.type = "range";
+	volumen.id = "sliderV";
 	volumen.min = "0";
 	volumen.max = "1";
 	volumen.step = "0.01";
-	volumen.oninput = "updateVolume(this.value)";
+	volumen.value = "1";
+	volumen.addEventListener("input", updateVolume);
+
+	iconV.className = "fa fa-volume-up";
+	iconV.id = "iconV";
 
 	li.appendChild(au);
 	li.appendChild(btnPlay);
 	li.appendChild(btnPause);
 	li.appendChild(rgDuration);
 	li.appendChild(time);
-	li.appendChild(volumen);
+	contCajaV.appendChild(volumen);
+	contCajaV.appendChild(iconV);
+	li.appendChild(contCajaV);
 	li.appendChild(text);
 
 	//upload link

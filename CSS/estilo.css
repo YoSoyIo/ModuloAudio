@@ -96,13 +96,13 @@ audio{
     cursor: pointer;
 }
 
-input[type='range'],
-input[type='range']::-webkit-slider-runnable-track,
-input[type='range']::-webkit-slider-thumb {
+#audioBar,
+#audioBar::-webkit-slider-runnable-track,
+#audioBar::-webkit-slider-thumb {
   -webkit-appearance: none;
 }
 
-input[type=range]::-webkit-slider-thumb {
+#audioBar::-webkit-slider-thumb {
   background-color: #777;
   width: 20px;
   height: 20px;
@@ -111,7 +111,7 @@ input[type=range]::-webkit-slider-thumb {
   margin-top: -9px;
 }
 
-input[type=range]::-moz-range-thumb {
+#audioBar::-moz-range-thumb {
   background-color: #777;
   width: 15px;
   height: 15px;
@@ -119,7 +119,7 @@ input[type=range]::-moz-range-thumb {
   border-radius: 50%;
 }
 
-input[type=range]::-ms-thumb {
+#audioBar::-ms-thumb {
   background-color: #777;
   width: 20px;
   height: 20px;
@@ -127,32 +127,76 @@ input[type=range]::-ms-thumb {
   border-radius: 50%;
 }
 
-input[type=range]::-webkit-slider-runnable-track {
+#audioBar::-webkit-slider-runnable-track {
   background-color: #777;
   height: 3px;
 }
 
-input[type=range]:focus::-webkit-slider-runnable-track {
+#audioBar:focus::-webkit-slider-runnable-track {
   outline: none;
 }
 
-input[type=range]::-moz-range-track {
+#audioBar::-moz-range-track {
   background-color: #777;
   height: 3px;
 }
 
-input[type=range]::-ms-track {
+#audioBar::-ms-track {
   background-color: #777;
   height: 3px;
 }
 
-input[type=range]::-ms-fill-lower {
+#audioBar::-ms-fill-lower {
   background-color: HotPink
 }
 
-input[type=range]::-ms-fill-upper {
+#audioBar::-ms-fill-upper {
   background-color: black;
 } 
+
+
+#sliderV {
+    /* Cambiar la dirección del slider a vertical */
+    writing-mode: bt-lr; /* De abajo hacia arriba */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 30px; /* Ancho del slider */
+    height: 30px; /* Altura del slider */
+    /* Rotar el slider */
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+  }
+  
+  /* Estilos adicionales para el slider */
+  #sliderV::-webkit-slider-runnable-track {
+    background-color: #ddd;
+    height: 3px;
+  }
+  
+  #sliderV::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 7px;
+    height: 7px;
+    background-color: #154d23;
+    border-radius: 50%;
+    border: none;
+    margin-top: -1.5px;
+  }
+
+  #sliderV::-moz-range-track {
+    background-color: #ddd;
+    height: 3px;
+  }
+  
+  #sliderV::-moz-range-thumb {
+    width: 7px;
+    height: 7px;
+    background-color: #154d23;
+    border-radius: 50%;
+    border: none;
+    margin-top: -1.5px;
+  }
+
 
 .boton-borrar{
     background: none;
@@ -167,7 +211,7 @@ input[type=range]::-ms-fill-upper {
     font-weight: bold;
 }
 
-ol#recordingsList {
+div#recordingsList {
     display: inline-flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -176,7 +220,7 @@ ol#recordingsList {
     list-style: none;
 }
 
-li#elemA {
+div#elemA {
     display: contents;
 }
 
@@ -200,4 +244,10 @@ li#elemA {
 .fechaNota{
     display: inline-block;
     color: #000;
+}
+
+#cajaVol{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
