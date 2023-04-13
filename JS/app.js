@@ -319,8 +319,9 @@ function createDownloadLink(blob) {
 		};
 		let fd = new FormData();
 		console.log(filename);
-		fd.append("audio_data", blob, filename);
-		xhr.open("POST", "upload.php", true);
+		fd.append("audio", blob, filename);
+		//xhr.open("POST", "/ModuloAudio/PHP/upload.php", true);
+		xhr.open("POST", "/ModuloAudio/PHP/upload.php", true);
 		xhr.send(fd);
 	});
 	li.appendChild(document.createTextNode(" ")); //add a space in between
