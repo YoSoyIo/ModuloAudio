@@ -1,12 +1,11 @@
 <?php
-echo "Entro PHP";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $audio = file_get_contents($_FILES['audio']['tmp_name']);
 
   // Conecta a la base de datos
   $servername = "127.0.0.1";
   $username = "root";
-  $password = "";
+  $password = "root12345";
   $dbname = "pruebas_servicio";
 
   $conn = new mysqli($servername, $username, $password, $dbname);
@@ -16,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   // Inserta el archivo de audio en la base de datos
+  echo $_FILES;
   $sql = "INSERT INTO audios (nombre, tipo, contenido) VALUES (?, ?, ?)";
   $stmt = $conn->prepare($sql);
   $stmt->bind_param("sss", $nombre, $tipo, $contenido);

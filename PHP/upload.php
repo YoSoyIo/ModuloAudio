@@ -1,12 +1,11 @@
 <?php
-echo "Entro PHP";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $audio = file_get_contents($_FILES['audio']['tmp_name']);
 
   // Conecta a la base de datos
   $servername = "127.0.0.1";
   $username = "root";
-  $password = "";
+  $password = "root12345";
   $dbname = "pruebas_servicio";
 
   $conn = new mysqli($servername, $username, $password, $dbname);
