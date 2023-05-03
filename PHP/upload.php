@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $stmt = $conn->prepare($sql);
   $stmt->bind_param("sss", $nombre, $tipo, $contenido);
   $nombre = $_FILES['audio']['name'];
-  $tipo = $_FILES['audio']['type'];
+  $tipo = "wav";
   $contenido = $audio;
   $stmt->execute();
 
