@@ -13,6 +13,8 @@ let recordButton = document.getElementById("recordButton");
 let stopButton = document.getElementById("stopButton");
 let pauseButton = document.getElementById("pauseButton");
 
+let tiempoT;
+
 //name of .wav file to use during upload and download (without extendion)
 let filename;
 

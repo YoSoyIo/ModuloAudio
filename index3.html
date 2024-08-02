@@ -1,0 +1,50 @@
+
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Grabador de audio con Recorder.js</title>
+	<link rel="stylesheet" type="text/CSS" href="CSS/estilo.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+</head>
+<body>
+	<div id="contenedorAudio">
+		<div id="controls" class="controles">
+			<p>Grabar audio</p>
+			<button id="recordButton" class="mostrar">
+				<i id="icon-grabar" class="fa fa-circle"></i>
+			</button>
+			<button id="pauseButton" class="ocultar">
+				<i id="icon-pausar" class="fa fa-circle"></i>
+			</button>
+			<button id="stopButton" class="mostrar">
+				<i id="icon-detener" class="fa fa-stop-circle-o"></i>
+			</button>
+		</div>
+		<div id="recordingsList">
+			<div id="elemA">
+				<audio id="audio1" controls="" controlslist="nodownload"
+					src="blob:https://localhost/04e07478-117c-45ec-920e-cdf032faa9ea" class="ocultar">
+					<b style="color: red">Este navegador no soporta la grabadora de audio</b></audio><button
+					id="boton-play" class="boton-play mostrar">
+					<i class="fa fa-play-circle-o"></i></button><button class="boton-pause ocultar">
+					<i class="fa fa-pause-circle-o"></i></button><input type="range" step="0.01" id="audioBar"
+					max="NaN" />
+				<p id="time1">0:00/0:00</p>
+				<div class="cajaVol" id="cajaVol">
+					<input type="range" id="sliderV" min="0" max="1" step="0.01" /><i class="fa fa-volume-up" id="iconV"></i>
+				</div>
+				<div>
+					<input type="text" id="txtNombre" placeholder="Ingresa el nombre del archivo..." class="textNombre"
+						value="" />
+				</div>
+				<a href="#" class="boton-audio">Guardar</a><button class="boton-borrar">
+					<i class="fa fa-trash"></i> Quitar
+				</button>
+			</div>
+		</div>
+	</div>
+	<script src="JS/recorder.js"></script>
+	<script src="JS/app.js"></script>
+</body>
+
+</html>
